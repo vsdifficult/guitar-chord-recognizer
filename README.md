@@ -1,30 +1,40 @@
 # Guitar Chord AI
 
-AI system for extracting guitar chord images from fretboards.
+AI system for recognizing guitar chords from fretboard images.
 
-Supported chords:
-C, G, Am, D, Em, F
+Supported chords: `C`, `G`, `Am`, `D`, `Em`, `F`.
 
-Pipeline:
-1. Collect dataset from the internet
-2. Clean images
-3. Train CNN (EfficientNet)
-4. Evaluate models
-5. Output
-6. Grad-CAM visualization
+## Updated pipeline
+1. **Collect** balanced raw images per chord with multiple queries.
+2. **Clean** data (corrupted / blurry / too small / near-duplicate removal).
+3. **Split** into stratified train/val/test sets.
+4. **Train** optimized CNN (`ChordNet`) with augmentations and callbacks.
+5. **Evaluate** quality on the test set.
 
-Run:
-1. Install dependencies
+## Install
+```bash
 pip install -r requirements.txt
+```
 
-2. Download the dataset
+## Run
+1. Download dataset (balanced):
+```bash
 python src/dataset.py
+```
 
-3. Clean the dataset
+2. Clean and split dataset:
+```bash
 python src/preprocessing.py
+```
 
-4. Train the model
-source python/train.py
+3. Train model:
+```bash
+python src/train.py
+```
 
-5. Evaluate the model
+4. Evaluate model:
+```bash
 python src/evaluate.py
+```
+
+Model artifacts are saved to `models/`.
