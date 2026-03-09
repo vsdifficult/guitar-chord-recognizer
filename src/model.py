@@ -1,5 +1,4 @@
-import tensorflow as tf
-from tensorflow.keras import layers
+from models.cnn_model import build_model
 
 NUM_CLASSES = 6
 

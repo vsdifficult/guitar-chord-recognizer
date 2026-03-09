@@ -5,7 +5,6 @@ from sklearn.metrics import classification_report, confusion_matrix
 IMG_SIZE = 224
 BATCH = 32
 
-model = tf.keras.models.load_model("models/guitar_chord_model.keras")
 
 test_ds = tf.keras.utils.image_dataset_from_directory(
     "data/test",
