@@ -1,21 +1,29 @@
+import numpy as np
 import tensorflow as tf
 from sklearn.metrics import classification_report, confusion_matrix
-import numpy as np
+
+IMG_SIZE = 224
+BATCH = 32
 
 model = tf.keras.models.load_model("models/guitar_chord_model.keras")
 
-test_ds = tf.keras.preprocessing.image_dataset_from_directory(
-"data/test",
-image_size=(224,224)
+test_ds = tf.keras.utils.image_dataset_from_directory(
+    "data/test",
+    image_size=(IMG_SIZE, IMG_SIZE),
+    batch_size=BATCH,
+    shuffle=False,
 )
+
+class_names = test_ds.class_names
+test_ds = test_ds.prefetch(tf.data.AUTOTUNE)
 
 y_true = []
 y_pred = []
 
-for x,y in test_ds:
-    pred = model.predict(x)
+for x, y in test_ds:
+    pred = model.predict(x, verbose=0)
     y_true.extend(y.numpy())
-    y_pred.extend(np.argmax(pred,axis=1))
+    y_pred.extend(np.argmax(pred, axis=1))
 
-print(classification_report(y_true,y_pred))
-print(confusion_matrix(y_true,y_pred))
+print(classification_report(y_true, y_pred, target_names=class_names))
+print(confusion_matrix(y_true, y_pred))
