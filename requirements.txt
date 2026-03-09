@@ -1,0 +1,13 @@
+tensorflow
+opencv-python
+numpy
+pandas
+matplotlib
+scikit-learn
+tqdm
+icrawler
+imagehash
+Pillow
+torch
+torchvision
+clip-by-openai
