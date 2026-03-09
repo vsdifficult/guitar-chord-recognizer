@@ -1,80 +1,30 @@
-# Guitar Chord AI (Research-Grade CNN Pipeline)
+# Guitar Chord AI
 
-Production-style project for guitar chord recognition from fretboard images using transfer learning and advanced CNN engineering.
+AI system for extracting guitar chord images from fretboards.
 
-## Key improvements
-- **Backbone**: EfficientNetV2B0 transfer learning.
-- **Architecture**: SE channel-attention, spatial attention, FPN-like feature fusion, LayerNorm + BatchNorm.
-- **Objective**: multiclass classification with focal cross-entropy and label smoothing.
-- **Optimization**: AdamW + weight decay, warmup+cosine LR schedule, gradient clipping, staged fine-tuning.
-- **Data**: balanced scraping, CLIP-assisted filtering, pHash deduplication, blur/edge filtering, deterministic splits.
-- **Interpretability**: Grad-CAM and Grad-CAM++ overlays.
-- **Evaluation**: Accuracy, Precision, Recall, F1, confusion matrix, ROC-AUC per class, calibration curves.
+Supported chords:
+C, G, Am, D, Em, F
 
-## Project structure
-```text
-src/
-  dataset/
-    dataset_builder.py
-    dataset_filtering.py
-  models/
-    cnn_model.py
-    losses.py
-  training/
-    trainer.py
-    scheduler.py
-  evaluation/
-    metrics.py
-    evaluate.py
-  inference/
-    predict.py
-  interpretability/
-    gradcam.py
-  utils/
-    config.py
-```
+Pipeline:
+1. Collect dataset from the internet
+2. Clean images
+3. Train CNN (EfficientNet)
+4. Evaluate models
+5. Output
+6. Grad-CAM visualization
 
-## Install
-```bash
+Run:
+1. Install dependencies
 pip install -r requirements.txt
-```
 
-## End-to-end run
-### Unified entrypoint (recommended)
-```bash
-python main.py full
-```
-
-> Tip: `python main.py` (without arguments) now prints CLI help and available commands.
-
-### Step-by-step commands
-```bash
-python main.py dataset       # scraping
-python main.py preprocess    # filtering + split
-python main.py train         # two-stage training
-python main.py evaluate      # full metrics
-python main.py predict --image sample.jpg
-python main.py gradcam --image sample.jpg --method gradcam++
-```
-
-### Legacy wrappers (still supported)
-```bash
+2. Download the dataset
 python src/dataset.py
+
+3. Clean the dataset
 python src/preprocessing.py
-python src/train.py
+
+4. Train the model
+source python/train.py
+
+5. Evaluate the model
 python src/evaluate.py
-```
-
-## Mathematical setup
-Given image \(x\) and one-hot label \(y\), model predicts \(p_\theta(y\mid x)\).
-
-- Base objective: \(\mathcal{L}_{CE} = -\sum_c y_c\log p_c\)
-- Focal modulation: \(\mathcal{L}_{focal} = -\sum_c \alpha (1-p_c)^\gamma y_c\log p_c\)
-- Label smoothing regularizes hard targets.
-- Weight decay regularizes \(\|\theta\|_2^2\).
-
-Total objective combines data loss + regularization.
-
-## Colab/GPU notes
-- Pipeline works with `tf.keras` and GPU acceleration.
-- CLIP filtering is optional and gracefully degrades to heuristic filtering if unavailable.
