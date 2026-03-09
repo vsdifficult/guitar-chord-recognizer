@@ -60,7 +60,7 @@ def run_gradcam(image: str, method: str, model_path: str, output: str | None) ->
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Guitar Chord AI main entrypoint")
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers = parser.add_subparsers(dest="command")
 
     subparsers.add_parser("dataset", help="Download balanced raw dataset")
     subparsers.add_parser("preprocess", help="Clean/filter data and perform train/val/test split")
@@ -83,6 +83,10 @@ def build_parser() -> argparse.ArgumentParser:
 def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
+
+    if not args.command:
+        parser.print_help()
+        return
 
     if args.command == "dataset":
         run_dataset()

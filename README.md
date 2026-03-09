@@ -45,6 +45,8 @@ pip install -r requirements.txt
 python main.py full
 ```
 
+> Tip: `python main.py` (without arguments) now prints CLI help and available commands.
+
 ### Step-by-step commands
 ```bash
 python main.py dataset       # scraping
